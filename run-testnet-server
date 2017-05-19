@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eux
+
+MPWD=$(pwd)
+
+docker network create \
+  --driver=bridge \
+  --subnet=172.77.0.0/16 \
+  --ip-range=172.77.5.0/24 \
+  --gateway=172.77.5.254 \
+  babblenet
+
+for i in $(seq 1 4)
+do
+    expose_port=""
+    #expose_port="-p $((1337+($i*10)))-$((1339+($i*10))):1337-1339"
+    docker create --name=node$i --net=babblenet --ip=172.77.5.$i $expose_port babble run \
+    --cache_size=50 \
+    --tcp_timeout=1000 \
+    --heartbeat=75 \
+    --node_addr="172.77.5.$i:1337" \
+    --proxy_addr="172.77.5.$i:1338" \
+    --max_pool=10 \
+    --client_addr="172.77.5.254:900$i"  \
+    --log_level="debug" 
+    docker cp $MPWD/../node$i node$i:/.babble
+    docker start node$i
+done
