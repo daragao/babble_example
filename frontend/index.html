@@ -20,35 +20,7 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
             <input id="m" autocomplete="off" /><button>Send</button>
         </form>
         <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
-        <script>
-$(function () {
-    var nodeName = 'node1';
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }	
-
-
-    var wsPort = getParameterByName('port') || 3000;
-    var wsURL = 'http://localhost:'+wsPort;
-    $('#messages').append($('<li>').text(wsURL));
-    var socket = io(wsURL);
-    $('form').submit(function(e){
-        socket.emit('submitTx@'+nodeName, $('#m').val());
-        $('#m').val('');
-        return false;
-    });
-    socket.on('submitTxResponse@'+nodeName, function(msg){
-        $('#messages').append($('<li>').text('---->>> ' + JSON.stringify(msg))); });
-    socket.on('commitTx@'+nodeName, function(msg){
-        $('#messages').append($('<li>').text(JSON.stringify(msg))); });
-});
-        </script>
+        <script src="index.js"></script>
     </body>
 </html>
 
