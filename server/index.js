@@ -26,7 +26,7 @@ const totalConnectedUsers = () => {
 };
 
 const onCommitTxReceived = (channelName,data) => {
-    //console.log('commitTx:',data);
+    //console.log(channelName,data);
     var strArr = data.params.map((p) => (new Buffer.from(p, 'base64').toString('utf8')));
     io.emit(channelName,strArr);
 };
@@ -47,4 +47,5 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(config.restServer, () => console.log(`REST API listening on *:${config.restServer.port}`));
-config.commitServer.forEach((port) => commitTxServer(port,onCommitTxReceived.bind(this,'commitTx:'+port)));
+config.commitServer.forEach((cfgCommitSrv) =>
+    commitTxServer(cfgCommitSrv,onCommitTxReceived.bind(this,'commitTx:'+cfgCommitSrv.port)));

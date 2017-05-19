@@ -27,11 +27,10 @@ const handleConnection = (conn,callback) => {
 
 };
 
-const createServer = (port,callback) => {
+const createServer = (serverCfg,callback) => {
     const server = net.createServer({ allowHalfOpen: false });
     server.on('connection', (conn) => handleConnection(conn,callback));
-    //server.listen(config.commitServer.port, () => console.log('server listening to %j', server.address()));
-    server.listen(port, () => console.log('server listening to %j', server.address()));
+    server.listen(serverCfg, () => console.log('server listening to %j', server.address()));
 };
 
 module.exports = createServer;
