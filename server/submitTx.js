@@ -34,10 +34,8 @@ const submitMsg = (ip,port,str) => new Promise((resolve,reject) => {
     });
     client.on('close', () => console.log('Connection closed',messageId));
 
-    //const connectSubmitTx = () => client.connect(config.submitClient.port, config.submitClient.ip);
     const connectSubmitTx = () => client.connect(port, ip);
     connectSubmitTx();
 });
 
-//submitMsg(config.submitClient.ip,config.submitClient.port,'test1').then(console.log).catch(console.log);
 module.exports = submitMsg;

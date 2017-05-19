@@ -22,6 +22,7 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
         <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
         <script>
 $(function () {
+    var nodeName = 'node1';
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -38,13 +39,13 @@ $(function () {
     $('#messages').append($('<li>').text(wsURL));
     var socket = io(wsURL);
     $('form').submit(function(e){
-        socket.emit('submitTx@172.77.5.1:1338', $('#m').val());
+        socket.emit('submitTx@'+nodeName, $('#m').val());
         $('#m').val('');
         return false;
     });
-    socket.on('submitTxResponse@172.77.5.1:1338', function(msg){
+    socket.on('submitTxResponse@'+nodeName, function(msg){
         $('#messages').append($('<li>').text('---->>> ' + JSON.stringify(msg))); });
-    socket.on('commitTx:9001', function(msg){
+    socket.on('commitTx@'+nodeName, function(msg){
         $('#messages').append($('<li>').text(JSON.stringify(msg))); });
 });
         </script>

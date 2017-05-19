@@ -12,14 +12,16 @@ const commitTxServer = require('./commitTx.js');
  */
 const app = express()
 app.get('/channels',(req,res) => {
-    const submitTxResponseChannels = config.submitClient.map((d) => `submitTxResponse@${d.ip}:${d.port}`);
-    const submitTxChannels = config.submitClient.map((d) => `submitTx@${d.ip}:${d.port}`);
-    const commitTxChannels = config.commitServer.map((d) => `commitTx@${d.port}`);
-    return res.send({
-        submitTxResponseChannels,
-        submitTxChannels,
-        commitTxChannels,
-    });
+
+    const resJson = config.nodes.reduce((prev,node) => {
+        prev[node.name] = {
+            submitTxResponseChannels: `submitTxResponse@${node.ip}:${node.submitTxPort}`,
+            submitTxChannels: `submitTx@${node.ip}:${node.submitTxPort}`,
+            commitTxChannels: `commitTx@${node.commitTxPort}`
+        };
+        return prev;
+    },{});
+    return res.send(resJson);
 });
 //app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
@@ -43,9 +45,9 @@ const onCommitTxReceived = (channelName,data) => {
     io.emit(channelName,data);
 };
 
-const onUserMsgReceived = (ip,port,msg) => {
+const onUserMsgReceived = (nodeName,ip,port,msg) => {
     console.log('message: ' + msg);
-    const channelName = 'submitTxResponse@'+ip+':'+port;
+    const channelName = 'submitTxResponse@'+nodeName;
     submitTx(ip,port,msg)
         .then((data) => io.emit(channelName,data))
         .catch(console.log);
@@ -55,13 +57,13 @@ io.on('connection', (socket) => {
     console.log('a user connected, total users connected:',totalConnectedUsers());
     socket.on('disconnect', () => console.log('user disconnected, total users connected:',totalConnectedUsers()));
     //listen to all the submitTx channels
-    config.submitClient.forEach((sCfg) => {
-        const channelName = 'submitTx@'+sCfg.ip+':'+sCfg.port;
-        socket.on(channelName, onUserMsgReceived.bind(this,sCfg.ip,sCfg.port));
+    config.nodes.forEach((node) => {
+        const channelName = 'submitTx@'+node.name;
+        socket.on(channelName, onUserMsgReceived.bind(this,node.name,node.ip,node.submitTxPort));
     });
 });
 
 httpServer.listen(config.restServer, () => console.log(`REST API listening on *:${config.restServer.port}`));
 //create a channel per each node (listed in the config file)
-config.commitServer.forEach((cfgCommitSrv) =>
-    commitTxServer(cfgCommitSrv,onCommitTxReceived.bind(this,'commitTx:'+cfgCommitSrv.port)));
+config.nodes.forEach((node) =>
+    commitTxServer({ port: node.commitTxPort },onCommitTxReceived.bind(this,'commitTx@'+node.name)));
