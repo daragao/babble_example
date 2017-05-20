@@ -15,9 +15,9 @@ app.get('/channels',(req,res) => {
 
     const resJson = config.nodes.reduce((prev,node) => {
         prev[node.name] = {
-            submitTxResponseChannels: `submitTxResponse@${node.ip}:${node.submitTxPort}`,
-            submitTxChannels: `submitTx@${node.ip}:${node.submitTxPort}`,
-            commitTxChannels: `commitTx@${node.commitTxPort}`
+            submitTxResponseChannels: `submitTxResponse@${node.name}`,
+            submitTxChannels: `submitTx@${node.name}`,
+            commitTxChannels: `commitTx@${node.name}`
         };
         return prev;
     },{});
