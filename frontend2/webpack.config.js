@@ -12,17 +12,10 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
     entry: './src/index.js',
-    output: {
-        path: path.resolve('dist'),
-        filename: 'index_bundle.js'
-    },
-    resolve: {
-        modules: ['node_modules', 'src', 'sass'],
-    },
+    output: { path: path.resolve('dist'), filename: 'index_bundle.js' },
+    resolve: { modules: ['node_modules', 'src', 'sass'], },
     devtool: "source-map", // any "source-map"-like devtool is possible
-    module: {
-        loaders: loaders
-    },
+    module: { loaders: loaders },
     plugins: [
         new ExtractTextPlugin('style.css'),
         HtmlWebpackPluginConfig,
