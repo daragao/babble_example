@@ -1,1 +1,93 @@
 @import '~bootstrap/dist/css/bootstrap';
+
+$node1color: #ff4747;
+$node2color: #ff8447;
+$node3color: #47ffa3;
+$node4color: #47a3ff;
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    min-height: 100%;
+}
+
+.btn {
+    &:focus {
+        outline: 0;
+    }
+    margin-right: 15px;
+
+    &.node1-background-color {
+        background-color: white;
+        border-width: 1px;
+        border-color: $node1color;
+    }
+    &.node2-background-color {
+        background-color: white;
+        border-width: 1px;
+        border-color: $node2color;
+    }
+    &.node3-background-color {
+        background-color: white;
+        border-width: 1px;
+        border-color: $node3color;
+    }
+    &.node4-background-color {
+        background-color: white;
+        border-width: 1px;
+        border-color: $node4color;
+    }
+
+    &.active {
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+        &.node1-background-color {
+            background-color: $node1color;
+        }
+        &.node2-background-color {
+            background-color: $node2color;
+        }
+        &.node3-background-color {
+            background-color: $node3color;
+        }
+        &.node4-background-color {
+            background-color: $node4color;
+        }
+
+    }
+}
+
+.small-scrollbar {
+    &::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar
+    {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        background-color: #DDDDDD;
+        border: 0px solid #DDDDDD;
+    }
+}
+
+.node1-blockquote-color {
+    border-color: $node1color;
+}
+.node2-blockquote-color {
+    border-color: $node2color;
+}
+.node3-blockquote-color {
+    border-color: $node3color;
+}
+.node4-blockquote-color {
+    border-color: $node4color;
+}
