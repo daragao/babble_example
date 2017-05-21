@@ -58,7 +58,7 @@ export default class MessageBar extends React.Component {
                 <div className="col-sm-6">
                     <form onSubmit={this.handleSubmit}>
                         <input className="form-control" type="text" id="inputMsg" placeholder="Type message here"
-                            value={this.state.message} onChange={this.handleChange}/>
+                            value={this.state.message} onChange={this.handleChange} autoComplete="off"/>
                     </form>
                 </div>
                 <div className="col-sm-6">

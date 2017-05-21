@@ -21,17 +21,7 @@ const initialState = {
             'commitTxChannels': 'commitTx@node4'
         }
     },
-    messages: [
-        {"node":"node1","msg":"hi","time":1495294649827},
-        {"node":"node2","msg":"by","time":1495294650915},
-        {"node":"node3","msg":"ciao","time":1495294653665},
-        {"node":"node4","msg":"yo","time":1495294656161},
-        {"node":"node4","msg":"yo","time":1495294656161},
-        {"node":"node4","msg":"yo","time":1495294656161},
-        {"node":"node4","msg":"yo","time":1495294656161},
-        {"node":"node4","msg":"yo","time":1495294656161},
-        {"node":"node4","msg":"yo","time":1495294656161},
-    ]
+    messages: [ ]
 };
 
 // should use Immutable

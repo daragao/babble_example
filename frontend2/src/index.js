@@ -1,6 +1,6 @@
 import 'index.scss'
 import 'bootstrap/dist/js/bootstrap.js';
-import io from 'socket.io-client';
+import socket from './socket';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -14,13 +14,13 @@ import todoApp from './reducers'
 
 let store = createStore(todoApp)
 
-const wsPort = 3000;
-const wsURL = 'http://localhost:'+wsPort;
-var socket = io(wsURL);
-//submit --> socket.emit('submitTx@'+nodeName, $('#m').val());
 Object.keys(store.getState().nodeClientState.nodes).forEach((nodeName) => {
-    socket.on('submitTxResponse@'+nodeName, (msg) => store.dispatch(actions.receivedSubmitTx(node,msg)));
-    socket.on('commitTx@'+nodeName, (msg) => store.dispatch(actions.receivedCommitTx(node,msg)));
+    socket.on('submitTxResponse@'+nodeName, (msg) => store.dispatch(actions.receivedSubmitTx(nodeName,Object.assign(
+        msg,
+        {
+            method: 'SubmitTxResponse'
+        }))));
+    socket.on('commitTx@'+nodeName, (msg) => store.dispatch(actions.receivedCommitTx(nodeName,msg)));
 });
 
 ReactDOM.render(
